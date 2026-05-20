@@ -1,0 +1,101 @@
+<mjml>
+  <mj-head>
+    <mj-style inline="inline">
+      p, li { margin: 0 !important; padding: 0; line-height: 1.5em; }
+      .highlight { color: #f39200; font-weight: bold; }
+      .bic-button { background-color: #f39200 !important; color: #fff !important; border-radius: 24px; font-weight: bold; letter-spacing: 0.5px; }
+      .bic-button:hover { background-color: #d87c00 !important; }
+    </mj-style>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-button border-radius="24px" font-weight="bold" font-size="16px" padding="18px 32px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#ececec">
+    <!-- Header -->
+    <mj-section background-color="#ffffff" padding-bottom="0">
+      <mj-column>
+        <mj-text font-size="11px" align="center" padding-top="0px" padding-bottom="15px">
+          <p>{trans_webview_text}</p>
+        </mj-text>
+        <mj-image src="https://news.bicgraphic.com/media/images/bic-logo-interco.svg" width="180px" alt="BIC Graphic" />
+      </mj-column>
+    </mj-section>
+    <!-- Main Card: Top Text -->
+    <mj-section background-color="#fafafa" padding="32px 0 0 0">
+      <mj-column width="420px" background-color="#fff" border-radius="18px 18px 0 0" padding="24px 24px 0 24px" vertical-align="middle">
+        <mj-text align="center" font-size="22px" color="#f39200" font-weight="bold" padding-bottom="10px" line-height="1.6">
+          We want to hear from you!
+        </mj-text>
+        <mj-text align="center" font-size="16px" color="#6f6f6f" padding-bottom="18px" line-height="1.8">
+          Thank you for placing your first order with us.<br/>
+          Please help us improve by answering this short survey.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Main Card: Center Button in 3 Columns -->
+    <mj-section background-color="#fafafa" padding="0">
+      <mj-column width="420px" background-color="#fff" padding="0 24px 0 24px">
+        <mj-group>
+          <mj-column width="33%"></mj-column>
+          <mj-column width="34%" vertical-align="middle">
+            <mj-button
+              href="{pagelink=5}"
+              css-class="bic-button"
+              width="220px"
+              background-color="#f39200"
+              color="#fff"
+              font-size="15px"
+              font-weight="bold"
+              border-radius="28px"
+              border="none"
+              align="center"
+              padding="16px 0"
+            >
+              Go to the survey
+            </mj-button>
+          </mj-column>
+          <mj-column width="33%"></mj-column>
+        </mj-group>
+      </mj-column>
+    </mj-section>
+
+    <!-- Main Card: Bottom Text -->
+    <mj-section background-color="#fafafa" padding="0 0 32px 0">
+      <mj-column width="420px" background-color="#fff" border-radius="0 0 18px 18px" padding="0 24px 24px 24px" vertical-align="middle">
+        <mj-text align="center" font-size="15px" color="#6f6f6f" padding-top="22px" line-height="1.8">
+          Thank you very much for your time and collaboration.<br/><br/>
+          Kind regards,<br/>
+          BIC Graphic Team
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <!-- Social & Footer -->
+    <mj-section background-color="#ffffff" padding-top="30px">
+      <mj-column width="550px">
+        <mj-social font-size="12px" icon-size="30px" border-radius="12px" mode="horizontal">
+          <mj-social-element name="facebook" border-radius="14px" padding-right="10px" color="#ffffff" background-color="#f39200" href="https://www.facebook.com/bicgraphic" />
+          <mj-social-element name="linkedin" border-radius="14px" padding-right="10px" padding-left="10px" color="#ffffff" background-color="#f39200" href="https://www.linkedin.com/company/bic-graphic" />
+          <mj-social-element name="youtube" border-radius="14px" padding-left="10px" color="#ffffff" background-color="#f39200" href="https://www.youtube.com/channel/UC7ZQGQ44SlF34LsUvTIl1ZA" />
+          <mj-social-element name="instagram" border-radius="14px" padding-left="10px" color="#ffffff" background-color="#f39200" href="https://www.instagram.com/bicgraphic/" />
+        </mj-social>
+        <mj-text font-size="16px" align="center" padding-top="10px">
+          <span style="font-size:20px;"><strong>#ThinkBIC</strong></span><br/>
+          {trans_afterthinkBIC}
+        </mj-text>
+        <mj-text align="center">
+          <span style="font-size:10px;">{trans_legal}</span>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding-top="0" background-color="#000000">
+      <mj-column>
+        <mj-spacer height="10px" />
+        <mj-text line-height="1.5" align="center" padding-top="0px" padding-bottom="0px" font-size="12px" color="#ffffff">
+          <p>{trans_copyright}</p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

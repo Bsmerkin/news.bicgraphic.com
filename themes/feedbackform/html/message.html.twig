@@ -1,0 +1,21 @@
+{% extends "::{$template}:base.html.twig" %}
+
+{% block content %}
+    <div class="mautic-message">
+        {% if message is defined %}
+            <div class="alert alert-{{type}}">
+                {{ message|raw }}
+            </div>
+        {% endif %}
+        
+        {% if content is defined %}
+            <div>{{ content|raw }}</div>
+        {% endif %}
+        
+        {% if lead is defined and lead is not empty %}
+            <div>
+                {{ lead|raw }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

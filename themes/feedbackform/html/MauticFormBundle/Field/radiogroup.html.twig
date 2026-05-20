@@ -1,0 +1,94 @@
+{% block radio_row %}
+    {# Permite pasar una clase extra desde el form, por ejemplo 'feedback-stars' o 'feedback-faces' #}
+    {% set feedbackClass = field.attr.feedback_class|default('feedback-faces') %}
+    <div class="mauticform-row mauticform-radiogroup mauticform-field-{{ field.alias }} {{ feedbackClass }}">
+        <label id="label{{ field.alias }}" for="mauticform_input_{{ form.vars.formAlias }}_{{ field.alias }}">{{ label|trans }}</label>
+        <div id="feedback_container_{{ field.alias }}">
+            <div id="radio_row_{{ field.alias }}" class="mauticform-radiogrp-row {{ feedbackClass }}">
+                {% for child in form.children %}
+                    <span class="mauticform-radiogrp-option">
+                        <input type="radio" name="{{ child.vars.full_name }}" id="{{ child.vars.id }}" value="{{ child.vars.value }}">
+                        {# Si la clase es feedback-stars, muestra una estrella, si no, deja el label vacío (caritas por CSS) #}
+                        <label for="{{ child.vars.id }}">{% if feedbackClass == 'feedback-stars' %}★{% endif %}</label>
+                    </span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var label = document.getElementById('label{{ field.alias }}');
+        if (label) {
+            label.className = 'feedback-label';
+        }
+        var container = document.getElementById('feedback_container_{{ field.alias }}');
+        if (container) {
+            container.className = 'feedback-container';
+        }
+        var fieldContainer = document.querySelector('.mauticform-field-{{ field.alias }}');
+        if (fieldContainer) {
+            var inputs = fieldContainer.querySelectorAll('input[type="radio"]');
+            var labels = fieldContainer.querySelectorAll('.mauticform-radiogrp-option label');
+            inputs.forEach(function(input) {
+                input.className = 'feedback-radio';
+            });
+            labels.forEach(function(label) {
+                if (fieldContainer.classList.contains('feedback-stars')) {
+                    label.className = 'feedback-option feedback-star';
+                } else {
+                    label.className = 'feedback-option';
+                }
+            });
+
+            // --- JS para efecto de estrellas ---
+            if (fieldContainer.classList.contains('feedback-stars')) {
+                labels.forEach(function(label, idx) {
+                    label.addEventListener('mouseenter', function() {
+                        for (var i = 0; i <= idx; i++) {
+                            labels[i].classList.add('selected');
+                        }
+                        for (var i = idx + 1; i < labels.length; i++) {
+                            labels[i].classList.remove('selected');
+                        }
+                    });
+                    label.addEventListener('mouseleave', function() {
+                        inputs.forEach(function(input, j) {
+                            if (input.checked) {
+                                for (var k = 0; k <= j; k++) {
+                                    labels[k].classList.add('selected');
+                                }
+                                for (var k = j + 1; k < labels.length; k++) {
+                                    labels[k].classList.remove('selected');
+                                }
+                            }
+                        });
+                        // Si ninguno está seleccionado
+                        if (![...inputs].some(function(input) { return input.checked; })) {
+                            labels.forEach(function(lab) { lab.classList.remove('selected'); });
+                        }
+                    });
+                    label.addEventListener('click', function() {
+                        for (var i = 0; i < labels.length; i++) {
+                            if (i <= idx) {
+                                labels[i].classList.add('selected');
+                            } else {
+                                labels[i].classList.remove('selected');
+                            }
+                        }
+                    });
+                });
+                // Al cargar, marcar las seleccionadas si ya hay valor
+                inputs.forEach(function(input, j) {
+                    if (input.checked) {
+                        for (var k = 0; k <= j; k++) {
+                            labels[k].classList.add('selected');
+                        }
+                    }
+                });
+            }
+            // --- Fin JS estrellas ---
+        }
+    });
+    </script>
+{% endblock %}

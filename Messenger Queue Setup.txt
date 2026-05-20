@@ -1,0 +1,48 @@
+1. Create a Systemd Service File for Each Worker
+
+sudo nano /etc/systemd/system/mautic-messenger-worker@.service
+
+@ is to give the service the posibility to work with workers
+
+[Unit]
+Description=Symfony Messenger Worker %i
+After=network.target
+
+[Service]
+User=bicgraphic_com
+Group=psacln
+WorkingDirectory=/var/www/vhosts/bicgraphic.com/news.bicgraphic.com
+ExecStart=/opt/plesk/php/8.3/bin/php /var/www/vhosts/bicgraphic.com/news.bicgraphic.com/bin/console messenger:consume email hit failed --time-limit=3600 --memory-limit=1G
+Environment="MESSENGER_CONSUMER_NAME=worker-%i"
+Restart=always
+RestartSec=30
+StandardOutput=append:/var/www/vhosts/bicgraphic.com/news.bicgraphic.com/var/logs/messenger_worker.log
+StandardError=append:/var/www/vhosts/bicgraphic.com/news.bicgraphic.com/var/logs/messenger_worker_error.log
+
+[Install]
+WantedBy=default.target
+
+
+2. Reload Systemd Configuration
+systemctl --user daemon-reload
+
+systemctl --user enable mautic-messenger-worker@1.service
+systemctl --user enable mautic-messenger-worker@2.service
+systemctl --user enable mautic-messenger-worker@3.service
+systemctl --user enable mautic-messenger-worker@{1..3}.service
+
+systemctl --user start mautic-messenger-worker@{1..3}.service
+
+
+4. Check the Status of the Services
+systemctl --user status mautic-messenger-worker@worker-1.service
+systemctl --user status mautic-messenger-worker@worker-2.service
+systemctl --user status mautic-messenger-worker@worker-3.service
+systemctl status mautic-messenger-worker@*.service
+
+5. Restart all workers
+systemctl restart mautic-messenger-worker@*.service
+
+
+6. Command to very process
+pgrep -fl "messenger:consume"

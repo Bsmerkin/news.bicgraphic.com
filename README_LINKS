@@ -1,0 +1,13 @@
+Redirects:
+'/site/%web_locale%' => 'siteRedirect',  => Redirects to the homepage of the contact
+'/cat/[:idcat]/%web_locale%' => 'categoryRedirect',
+'/content/[:idcontent]/%web_locale%' => 'contentRedirect',
+'/brand/[:idbrand]/%web_locale%' => 'brandRedirect',
+'/search/%web_locale%' => 'searchRedirect',
+'/product/[:root]/%web_locale%' => 'productRedirect', 
+
+Examples:
+siteRedirect     => https://redirect.bicgraphic.eu/site/%web_locale%  
+categoryRedirect => https://redirect.bicgraphic.eu/web/cat/101144/%web_locale%  
+contentRedirect  => https://redirect.bicgraphic.eu/web/content/100400/%web_locale%
+productRedirect  => https://redirect.bicgraphic.eu/web/product/3460053062/%web_locale%

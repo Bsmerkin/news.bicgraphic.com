@@ -1,0 +1,67 @@
+###############################################################################
+# Mautic / Symfony – .gitignore
+###############################################################################
+
+# ── Secrets & local config ────────────────────────────────────────────────────
+config/local.php
+.env.local
+.env.*.local
+.env.prod.local
+
+# ── Symfony / Mautic generated files ─────────────────────────────────────────
+/var/
+/app/cache/
+/app/logs/
+
+# ── Vendor (installed by composer) ───────────────────────────────────────────
+/vendor/
+
+# ── Node modules ─────────────────────────────────────────────────────────────
+/node_modules/
+
+# ── Mautic user-uploaded content (keep structure, ignore uploads) ─────────────
+/media/files/
+/media/images/
+
+# ── Compiled / generated assets ──────────────────────────────────────────────
+/media/css/
+/media/js/
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logimport.txt
+
+# ── OS & editor artefacts ─────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── PHP & test tooling output ─────────────────────────────────────────────────
+.phpunit.result.cache
+.php-cs-fixer.cache
+.php_cs.cache
+/_output/
+/tests/_output/
+
+# ── Backup & archive files ────────────────────────────────────────────────────
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.gz
+*.bz2
+*.sql
+*.dump
+*.bak
+*.old
+
+# ── Compiled Symfony DotEnv ───────────────────────────────────────────────────
+/.env.local.php
+
+# ── Mautic update leftovers ───────────────────────────────────────────────────
+/upgrade/
+/upgrade.php

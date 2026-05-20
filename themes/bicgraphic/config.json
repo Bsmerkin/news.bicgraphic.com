@@ -1,0 +1,7 @@
+{
+  "name": "BIC Graphic Theme",
+  "author": "BIC Graphic",
+  "authorUrl": "https://bicgraphic.com",
+  "builder": ["grapesjsbuilder"],
+  "features": ["email"]
+}

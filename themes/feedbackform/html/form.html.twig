@@ -1,0 +1,461 @@
+{% extends "::{$template}:base.html.twig" %}
+
+{% block formContent %}
+    {% if message is defined %}
+        <div class="mauticform-error">{{ message|raw }}</div>
+    {% endif %}
+
+    {% if header is defined %}
+        <div class="mauticform-header">{{ header|raw }}</div>
+    {% endif %}
+
+    {{ formContent|raw }}
+
+    {% if footer is defined %}
+        <div class="mauticform-footer">{{ footer|raw }}</div>
+    {% endif %}
+{% endblock %}
+
+{% block formStylesheets %}
+    {{ parent() }}
+    <style>
+        /* Estilos generales del formulario */
+        .mauticform-innerform {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+            max-width: 420px;
+            margin: 0 auto;
+            overflow: hidden;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            padding: 32px 24px 24px 24px;
+        }
+
+        .mauticform-page-wrapper {
+            padding: 0;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-label, .mauticform-label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+            color: #222;
+            font-size: 15px;
+        }
+
+        .form-control, .mauticform-input, .mauticform-selectbox, .mauticform-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 15px;
+            background: #fafbfc;
+            color: #222;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus, .mauticform-input:focus, .mauticform-selectbox:focus, .mauticform-textarea:focus {
+            border-color: #F9A620;
+            box-shadow: 0 0 0 2px #fde6b6;
+            outline: none;
+        }
+
+        .mauticform-checkboxgrp, .mauticform-radiogrp {
+            margin-bottom: 18px;
+        }
+
+        .mauticform-checkboxgrp label, .mauticform-radiogrp label {
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 4px;
+        }
+
+        .mauticform-error, .alert-error {
+            background: #ffeaea;
+            color: #c00;
+            border: 1px solid #ffb3b3;
+            border-radius: 5px;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .mauticform-success, .alert-success {
+            background: #eaffea;
+            color: #1a7f1a;
+            border: 1px solid #b3ffb3;
+            border-radius: 5px;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .mauticform-button-wrapper {
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .mauticform-button {
+            background-color: #F9A620 !important;
+            border: none !important;
+            color: white !important;
+            padding: 12px 0 !important;
+            font-size: 17px !important;
+            font-weight: bold !important;
+            border-radius: 6px !important;
+            width: 100% !important;
+            cursor: pointer !important;
+            box-shadow: 0 2px 8px rgba(249,166,32,0.08) !important;
+            text-transform: none !important;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+
+        .mauticform-button:hover {
+            background-color: #e89b1f !important;
+            box-shadow: 0 4px 16px rgba(249,166,32,0.16) !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .mauticform-innerform {
+                padding: 18px 6px 12px 6px;
+                max-width: 98vw;
+            }
+            .mauticform-button {
+                font-size: 15px !important;
+            }
+        }
+
+        /* Estilo del encabezado */
+        .mauticform-header {
+            background-color: #F9A620;
+            color: white;
+            font-weight: bold;
+            padding: 15px 20px;
+            font-size: 16px;
+            position: relative;
+        }
+
+        /* Contenido del formulario */
+        .mauticform-page-wrapper {
+            padding: 20px;
+        }
+
+        /* Estilos para el formulario de feedback con caras */
+        .feedback-container {
+            margin: 20px 0 30px;
+        }
+
+        /* Transformar el grupo de radio buttons en un flex container */
+        .mauticform-radiogrp-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        /* Estilo para cada opción */
+        .mauticform-radiogrp-row .mauticform-radiogrp-option {
+            flex: 1;
+            text-align: center;
+            margin: 0 2px;
+            position: relative;
+        }
+
+        /* Ocultar el radio button original */
+        .feedback-radio {
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        /* Estilo para la etiqueta que contiene la cara */
+        .feedback-option {
+            display: block;
+            cursor: pointer;
+            padding: 8px 0;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        /* Caras de colores con gradiente */
+        .mauticform-radiogrp-option .feedback-option:before {
+            content: "";
+            display: block;
+            width: 24px;
+            height: 24px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        /* Escala de colores rojo-amarillo-verde para las caras (5 opciones) */
+        .mauticform-radiogrp-option:nth-child(1) .feedback-option:before {
+            background-color: #E42626;
+            content: "😠";
+            font-size: 24px;
+        }
+
+        .mauticform-radiogrp-option:nth-child(2) .feedback-option:before {
+            background-color: #F1824C;
+            content: "😕";
+            font-size: 24px;
+        }
+
+        .mauticform-radiogrp-option:nth-child(3) .feedback-option:before {
+            background-color: #FDCA40;
+            content: "🙂";
+            font-size: 24px;
+        }
+
+        .mauticform-radiogrp-option:nth-child(4) .feedback-option:before {
+            background-color: #A6CE54;
+            content: "😄";
+            font-size: 24px;
+        }
+
+        .mauticform-radiogrp-option:nth-child(5) .feedback-option:before {
+            background-color: #2D8132;
+            content: "🤩";
+            font-size: 24px;
+        }
+
+        /* Cambiar el estilo cuando el radio button está seleccionado */
+        .feedback-radio:checked + .feedback-option:before {
+            transform: scale(1.2);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Texto Not likely y Likely */
+        .mauticform-radiogrp-row::before,
+        .mauticform-radiogrp-row::after {
+            content: "Not likely";
+            position: absolute;
+            bottom: -20px;
+            left: 5px;
+            font-size: 11px;
+            color: #777;
+        }
+
+        .mauticform-radiogrp-row::after {
+            content: "Likely";
+            left: auto;
+            right: 5px;
+        }
+
+        /* Asegurar que la etiqueta principal queda arriba y centrada */
+        .feedback-label {
+            display: block;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+            padding: 0 10px;
+        }
+
+        /* Estilos para el botón de envío */
+        .mauticform-button-wrapper {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .mauticform-button {
+            background-color: #F9A620 !important;
+            border: none !important;
+            color: white !important;
+            padding: 10px 0 !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+            border-radius: 4px !important;
+            width: 100% !important;
+            cursor: pointer !important;
+            box-shadow: none !important;
+            text-transform: none !important;
+        }
+
+        .mauticform-button:hover {
+            background-color: #e89b1f !important;
+        }
+
+        /* Pie de página */
+        .mauticform-footer {
+            font-size: 10px;
+            color: #999;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* Estilos responsivos */
+        @media (max-width: 480px) {
+            .mauticform-radiogrp-row {
+                flex-wrap: wrap;
+            }
+            
+            .mauticform-radiogrp-option {
+                flex: 1 0 20%;
+                margin-bottom: 10px;
+            }
+            
+            .feedback-option:before {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block formScripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Añadir clase a la cabecera del formulario para estilizarla
+            var formHeader = document.querySelector('.mauticform-name');
+            if (formHeader) {
+                formHeader.parentNode.className += ' mauticform-header';
+                
+                // Añadir botón de cierre
+                var closeButton = document.createElement('span');
+                closeButton.innerHTML = '×';
+                closeButton.style.position = 'absolute';
+                closeButton.style.right = '15px';
+                closeButton.style.top = '12px';
+                closeButton.style.fontSize = '20px';
+                closeButton.style.fontWeight = 'bold';
+                closeButton.style.cursor = 'pointer';
+                formHeader.parentNode.appendChild(closeButton);
+                
+                // Opcional: funcionalidad para cerrar (necesitarías implementar según tu caso)
+                closeButton.addEventListener('click', function() {
+                    // Código para cerrar el formulario
+                    var formContainer = document.querySelector('.mauticform-innerform');
+                    if (formContainer) {
+                        formContainer.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Transformar los radio groups en estrellas de feedback
+            const radioGroups = document.querySelectorAll('.mauticform-radiogrp');
+            radioGroups.forEach(function(radioGroup) {
+                // Verificar si es un grupo de rating (puedes personalizar este selector)
+                if (radioGroup.id && radioGroup.id.includes('rating')) {
+                    const label = radioGroup.querySelector('label');
+                    const labelText = label ? label.textContent.trim() : '¿Cómo calificarías tu experiencia?';
+                    const options = radioGroup.querySelectorAll('input[type="radio"]');
+                    const name = options.length > 0 ? options[0].name : '';
+                    const radioValues = [];
+                    options.forEach(function(radio) {
+                        radioValues.push({
+                            id: radio.id,
+                            value: radio.value
+                        });
+                    });
+                    radioGroup.innerHTML = '';
+                    const newHTML = document.createElement('div');
+                    const newLabel = document.createElement('label');
+                    newLabel.textContent = labelText;
+                    newLabel.setAttribute('style', 'display:block;text-align:center;margin-bottom:15px;font-weight:bold;font-size:14px;color:#333;padding:0 10px;');
+                    newHTML.appendChild(newLabel);
+                    const container = document.createElement('div');
+                    container.className = 'star-rating-container';
+                    container.setAttribute('style', 'margin:20px 0 30px;');
+                    const row = document.createElement('div');
+                    row.className = 'star-rating-row';
+                    row.setAttribute('style', 'display:flex;justify-content:center;align-items:center;gap:4px;position:relative;');
+                    for (let i = 0; i < Math.min(radioValues.length, 5); i++) {
+                        const option = document.createElement('span');
+                        option.className = 'star-rating-option';
+                        option.setAttribute('style', 'position:relative;display:inline-block;');
+                        const radio = document.createElement('input');
+                        radio.type = 'radio';
+                        radio.name = name;
+                        radio.id = radioValues[i].id;
+                        radio.value = radioValues[i].value;
+                        radio.className = 'star-radio';
+                        radio.setAttribute('style', 'opacity:0;position:absolute;left:0;top:0;width:32px;height:32px;z-index:2;cursor:pointer;margin:0;');
+                        const star = document.createElement('label');
+                        star.setAttribute('for', radioValues[i].id);
+                        star.className = 'star-svg-label';
+                        star.innerHTML = '<svg class="star-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+                        option.appendChild(radio);
+                        option.appendChild(star);
+                        row.appendChild(option);
+                    }
+                    container.appendChild(row);
+                    newHTML.appendChild(container);
+                    radioGroup.appendChild(newHTML);
+                    // Lógica de relleno progresivo
+                    const allRadios = row.querySelectorAll('.star-radio');
+                    const allStars = row.querySelectorAll('.star-svg-label .star-svg');
+                    function updateStars(idx) {
+                        allStars.forEach((star, i) => {
+                            if (i <= idx) {
+                                star.style.fill = '#FFD700';
+                                star.style.filter = 'drop-shadow(0 0 2px #FFD700)';
+                            } else {
+                                star.style.fill = 'none';
+                                star.style.filter = 'none';
+                            }
+                        });
+                    }
+                    allRadios.forEach((radio, idx) => {
+                        radio.addEventListener('change', function() {
+                            if (this.checked) updateStars(idx);
+                        });
+                    });
+                    // Hover para previsualizar
+                    allStars.forEach((star, idx) => {
+                        star.parentNode.addEventListener('mouseenter', function() {
+                            updateStars(idx);
+                        });
+                        star.parentNode.addEventListener('mouseleave', function() {
+                            const checkedIdx = Array.from(allRadios).findIndex(r => r.checked);
+                            updateStars(checkedIdx >= 0 ? checkedIdx : -1);
+                        });
+                    });
+                    // Inicializar estado
+                    const checkedIdx = Array.from(allRadios).findIndex(r => r.checked);
+                    updateStars(checkedIdx >= 0 ? checkedIdx : -1);
+                }
+            });
+            
+            // Para los radio buttons ya con la clase correcta
+            const radioButtons = document.querySelectorAll('.feedback-radio');
+            radioButtons.forEach(function(radio) {
+                radio.setAttribute('data-face-value', radio.value);
+            });
+            
+            // Para las etiquetas ya con la clase correcta
+            const labels = document.querySelectorAll('.feedback-option');
+            labels.forEach(function(label) {
+                label.addEventListener('click', function() {
+                    const radio = this.previousElementSibling;
+                    if (radio) {
+                        radio.checked = true;
+                        // Disparar evento de cambio para cualquier listener
+                        const event = new Event('change', { bubbles: true });
+                        radio.dispatchEvent(event);
+                    }
+                });
+            });
+            
+        });
+    </script>
+{% endblock %}

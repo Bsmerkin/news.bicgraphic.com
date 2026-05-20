@@ -1,0 +1,29 @@
+
+{
+    "name": "Feedback Form Theme",
+    "author": "Barbara Smerkin",
+    "authorUrl": "barbara.smerkin.com",
+    "version": "1.0.0",
+    "description": "Tema personalizado con formulario de feedback con caras",
+    "features": [
+        "form"
+    ],
+    "slots": {
+        "page": {
+            "sections": {
+                "header": {
+                    "name": "Header",
+                    "label": "mautic.page.builder.header"
+                },
+                "content": {
+                    "name": "Content",
+                    "label": "mautic.page.builder.content"
+                },
+                "footer": {
+                    "name": "Footer",
+                    "label": "mautic.page.builder.footer"
+                }
+            }
+        }
+    }
+}

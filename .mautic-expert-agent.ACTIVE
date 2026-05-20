@@ -1,0 +1,9 @@
+# Activación del agente experto en Mautic
+
+Este archivo activa el agente personalizado para soporte experto en Mautic 6.0 en el proyecto BIC Graphic.
+
+- Instrucciones cargadas desde .mautic-expert-agent.instructions.md
+- El agente responderá consultas técnicas sobre emails, segmentos, automatizaciones, campañas, traducciones y referencias entre componentes.
+- Referencia automática a la documentación oficial de Mautic 6.0.
+
+¡Agente activado y listo para ayudarte!

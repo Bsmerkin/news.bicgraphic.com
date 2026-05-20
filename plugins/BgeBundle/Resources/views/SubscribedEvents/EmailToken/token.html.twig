@@ -1,0 +1,9 @@
+<div id="translationTokens">
+	<div class="list-group">
+		<?php foreach ($items as $item): ?>
+			<a href="#" class="list-group-item ui-draggable ui-draggable-handle" data-token="<strong contenteditable=&quot;false&quot; data-token=&quot;{mautic_translate=<?php echo $item->getId(); ?>|<?php echo $item->getDescription(); ?>}&quot;>**<?php echo $item->getDescription(); ?>**</strong>">
+				<span><?php echo $item->getDescription(); ?></span>
+			</a>
+		<?php endforeach; ?>
+	</div>
+</div>

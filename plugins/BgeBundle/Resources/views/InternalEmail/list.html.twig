@@ -1,0 +1,287 @@
+{% set isIndex = tmpl == 'index' ? true : false %}
+{% set tmpl = 'list' %}
+
+{% extends isIndex ? '@MauticCore/Default/content.html.twig' : '@MauticCore/Default/raw_output.html.twig' %}
+{% block headerTitle %}{% trans %}mautic.internalemail.header.index{% endtrans %}{% endblock %}
+{% block mauticContent %}internalemails{% endblock %}
+
+{% if nameGetter is not defined %}
+    {% set nameGetter = 'getName' %}
+{% endif %}
+
+{% set listCommand = 'mautic.internalemail.searchcommand.list'|trans %}
+
+{% block content %}
+{% if isIndex %}
+<div id="page-list-wrapper" class="panel panel-default bdr-t-wdh-0">
+    {{- include('@MauticCore/Helper/list_toolbar.html.twig', {
+        'searchValue': app.request.get('search'),
+        'searchHelp': 'mautic.internalemail.help.searchcommands',
+        'searchId': 'internalemail-search',
+        'action': currentRoute,
+        'page_actions': {
+            'templateButtons': {
+                'new': permissions['bge:internalemail:create']
+            },
+            'routeBase': 'internalemail',
+            'langVar': 'internalemail',
+            'customButtons': [
+                {
+                    'attr': {
+                        'class': 'btn btn-default btn-nospin',
+                        'data-toggle': 'ajaxmodal',
+                        'data-target': '#MauticSharedModal',
+                        'href': path('mautic_internalemail_action', {'objectAction': 'send'}),
+                        'data-header': 'mautic.dashboard.sendinternals.add'|trans,
+                    },
+                    'iconClass': 'fa fa-paper-plane',
+                    'btnText': 'mautic.dashboard.sendinternals.add',
+                },
+            ],
+        },
+        'bulk_actions': {
+            'routeBase': 'internalemail',
+            'templateButtons': {
+                'delete': permissions['bge:internalemail:delete']
+            }
+        },
+        'quickFilters': [
+            {
+                'search': 'mautic.core.searchcommand.ispublished',
+                'label': 'mautic.core.form.active',
+                'tooltip': 'mautic.core.searchcommand.ispublished.description',
+                'icon': 'ri-check-line'
+            },
+            {
+                'search': 'mautic.core.searchcommand.isunpublished',
+                'label': 'mautic.core.form.inactive',
+                'tooltip': 'mautic.core.searchcommand.isunpublished.description',
+                'icon': 'ri-close-line'
+            },
+            {
+                'search': 'mautic.core.searchcommand.isuncategorized',
+                'label': 'mautic.core.form.uncategorized',
+                'tooltip': 'mautic.core.searchcommand.isuncategorized.description',
+                'icon': 'ri-folder-unknow-line'
+            },
+            {
+                'search': 'mautic.core.searchcommand.ismine',
+                'label': 'mautic.core.searchcommand.ismine.label',
+                'tooltip': 'mautic.core.searchcommand.ismine.description',
+                'icon': 'ri-user-line'
+            },
+            {
+                'search': 'datesent:empty',
+                'label': 'Not Sent',
+                'tooltip': 'Show internal emails that have not been sent yet',
+                'icon': 'ri-mail-close-line'
+            },
+            {
+                'search': 'datesent:!empty',
+                'label': 'Sent',
+                'tooltip': 'Show internal emails that have been sent',
+                'icon': 'ri-mail-send-line'
+            }
+        ],
+        'sessionVar': 'internalemail',
+        'orderBy': 'e.name',
+        'filters': filters|default([]),
+        'filterUri': 'internalemail',
+        'listCommand': listCommand
+    }) }}
+
+    <div class="page-list">
+        {{ block('listResults') }}
+    </div>
+</div>
+{% else %}
+    {{ block('listResults') }}
+{% endif %}
+{% endblock %}
+
+{% block listResults %}
+    {% if items is defined and items is not empty %}
+        <div class="table-responsive">
+            <table class="table table-hover" id="internalemailTable">
+                <thead>
+                <tr>
+                    {{ include(
+                        '@MauticCore/Helper/tableheader.html.twig',
+                        {
+                            'checkall': 'true',
+                            'target': '#internalemailTable',
+                            'langVar': 'internalemail',
+                            'routeBase': 'internalemail',
+                            'templateButtons': {
+                                'delete': permissions['bge:internalemail:delete'],
+                            },
+                            'customButtons': [
+                                {
+                                    'attr': {
+                                        'href': path(
+                                            'mautic_internalemail_action',                                                 
+                                            {'objectAction' : 'batchSend', 'tmpl' :'list'}
+                                        ),
+                                        'class': 'btn btn-default btn-sm',
+                                        'data-toggle': 'ajaxmodal',
+                                        'data-target': '#MauticSharedModal',
+                                        'data-header': 'Send Internal Email',
+                                    },
+                                    'btnText': 'Send selected',
+                                    'iconClass': 'fa fa-paper-plane',
+                                }
+                            ]                                    
+                        }) }}
+                    {{ include(
+                        '@MauticCore/Helper/tableheader.html.twig',
+                        {
+                            'sessionVar': 'internalemail',
+                            'orderBy'   : 'e.name',
+                            'text'      : 'mautic.core.name',
+                            'class'     : 'col-internalemail-name',
+                            'default'   : true,
+                        }
+                    ) }}
+                    {{ include(
+                        '@MauticCore/Helper/tableheader.html.twig',
+                        {
+                            'sessionVar': 'internalemail',
+                            'orderBy'   : 'e.country',
+                            'text'      : 'mautic.core.country',
+                            'class'     : 'col-internalemail-country',
+                        }
+                    ) }}
+                    {{ include(
+                        '@MauticCore/Helper/tableheader.html.twig',
+                        {
+                            'sessionVar': 'internalemail',
+                            'orderBy'   : 'e.language',
+                            'text'      : 'mautic.core.language',
+                            'class'     : 'col-internalemail-language',
+                        }
+                    ) }}
+                    {{ include(
+                        '@MauticCore/Helper/tableheader.html.twig',
+                        {
+                            'sessionVar': 'internalemail',
+                            'orderBy'   : 'e.category',
+                            'text'      : 'mautic.core.category',
+                            'class'     : 'col-internalemail-category',
+                        }
+                    ) }}
+                    {{ include(
+                        '@MauticCore/Helper/tableheader.html.twig',
+                        {
+                            'sessionVar': 'internalemail',
+                            'orderBy'   : 'e.dateAdded',
+                            'text'      : 'mautic.core.dateadded',
+                            'class'     : 'col-internalemail-dateadded',
+                        }
+                    ) }}
+                   {{ include(
+                        '@MauticCore/Helper/tableheader.html.twig',
+                        {
+                            'sessionVar': 'internalemail',
+                            'orderBy'   : 'e.email',
+                            'text'      : 'mautic.core.email',
+                            'class'     : 'col-internalemail-email',
+                        }
+                    ) }}                                
+                    {{ include(
+                        '@MauticCore/Helper/tableheader.html.twig',
+                        {
+                            'sessionVar': 'internalemail',
+                            'orderBy'   : 'e.dateSent',
+                            'text'      : 'mautic.core.datesent',
+                            'class'     : 'col-internalemail-dateSent',
+                        }
+                    ) }}                                                            
+                    {{ include(
+                        '@MauticCore/Helper/tableheader.html.twig',
+                        {
+                            'sessionVar': 'internalemail',
+                            'orderBy'   : 'e.id',
+                            'text'      : 'mautic.core.id',
+                            'class'     : 'col-internalemail-id',
+                        }
+                    ) }}                            
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>
+                            {{- include('@MauticCore/Helper/list_actions.html.twig', {
+                                item: item,
+                                templateButtons: {
+                                    'edit': permissions['bge:internalemail:edit'],
+                                    'delete': permissions['bge:internalemail:delete'],                                            
+                                },
+                                routeBase: 'internalemail',
+                                langVar: 'internalemail',
+                                nameGetter: nameGetter,
+                                customButtons: [
+                                    {
+                                        'attr': {
+                                            'href': path('mautic_internalemail_action', {'objectAction': 'batchSend', 'objectId': item.id}),
+                                            'class': 'btn btn-default btn-sm',
+                                            'data-toggle': 'ajaxmodal',
+                                            'data-target': '#MauticSharedModal',
+                                            'data-header': 'Send Internal Email',
+                                        },
+                                        'btnText': 'Send',
+                                        'iconClass': 'fa fa-paper-plane',
+                                    }
+                                ]
+                            }) -}}
+                        </td>                                
+                        <td>
+                            {{- include('@MauticCore/Helper/publishstatus_icon.html.twig', {
+                                'item': item,
+                                'model': 'internalemail.internalemail',
+                            }) -}}
+                            <a href="{{ path('mautic_internalemail_action', {'objectAction': 'view', 'objectId': item.getId()}) }}" data-toggle="ajax">
+                                {{ item.lead.email }}
+                            </a>                                    
+                        </td>
+                        <td>
+                            {% set flag = item.country is not empty ? assetGetCountryFlag(item.country|country_name) : '' %}
+                            {% if flag is not empty %}
+                                <img src="{{ flag }}" style="max-height: 24px;" class="mr-sm" />
+                            {% endif %}
+                            {{ item.country|country_name }}
+                        </td>
+                        <td>{{ item.language|language_name }}</td>
+                        <td>{{ item.category ? item.category.title : 'N/A' }}</td>
+                        <td>{{ item.dateAdded|date('Y-m-d H:i') }}</td>
+                        <td>
+                            {% if item.email %}
+                                <a href="{{ path('mautic_email_action', {'objectAction': 'view', 'objectId': item.email.id}) }}">
+                                    {{ item.email.name }}
+                                </a>
+                            {% else %}
+                                {{ '' }}
+                            {% endif %}
+                        </td>
+                        <td>{{ item.dateSent ? item.dateSent|date('Y-m-d H:i') : '' }}</td>
+                        <td>{{ item.id }}</td>                                
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="panel-footer">
+                {{- include('@MauticCore/Helper/pagination.html.twig', {
+                    'totalItems' : items|length,
+                    'page'       : page,
+                    'limit'      : limit,
+                    'baseUrl'    : path('mautic_internalemail_index'),
+                    'sessionVar' : 'internalemail',
+                }) -}}
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            {{ 'mautic.core.noresults'|trans }}
+        </div>
+    {% endif %}
+{% endblock %}

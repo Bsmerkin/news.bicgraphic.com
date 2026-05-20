@@ -1,0 +1,42 @@
+{% extends '@MauticCore/Default/content.html.twig' %}
+
+{% set id = form.vars['data'].getId() %}
+{% set header = id is empty ? 'mautic.internalemail.menu.new'|trans : 'mautic.internalemail.menu.edit'|trans({'%name%': form.vars['data'].getName()}) %}
+
+{% block headerTitle %}{{ header }}{% endblock %}
+{% block mauticContent %}internalemail{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <div class="box-layout">
+        <div class="col-md-9 height-auto">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="nav nav-tabs pr-md pl-md">
+                        <li class="active">
+                            <a href="#details" role="tab" data-toggle="tab">
+                                {% trans %}mautic.core.details{% endtrans %}
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- start: tab-content -->
+                    <div class="tab-content pa-md">
+                        <div class="tab-pane fade in active bdr-w-0" id="details">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {{ form_row(form.lead) }}
+                                    {{ form_row(form.country) }}
+                                    {{ form_row(form.language) }}
+                                    {{ form_row(form.category) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end: tab-content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

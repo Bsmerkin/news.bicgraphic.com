@@ -1,0 +1,208 @@
+/* Estilos generales del formulario */
+.mauticform-innerform {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 0 auto;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo del encabezado */
+.mauticform-header {
+    background-color: #F9A620;
+    color: white;
+    font-weight: bold;
+    padding: 15px 20px;
+    font-size: 16px;
+    position: relative;
+}
+
+/* Contenido del formulario */
+.mauticform-page-wrapper {
+    padding: 20px;
+}
+
+/* Estilos para el formulario de feedback */
+.feedback-container {
+    margin: 20px 0 30px;
+}
+
+/* Transformar el grupo de radio buttons en un flex container */
+.mauticform-radiogrp-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Estilo para cada opción */
+.mauticform-radiogrp-row .mauticform-radiogrp-option {
+    flex: 1;
+    text-align: center;
+    margin: 0 2px;
+    position: relative;
+}
+
+/* Ocultar el radio button original */
+.feedback-radio {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    cursor: pointer;
+    margin: 0;
+}
+
+/* Estilo base para la opción */
+.feedback-option {
+    display: block;
+    cursor: pointer;
+    padding: 8px 0;
+    position: relative;
+    transition: all 0.2s ease;
+    font-size: 24px;
+}
+
+/* --- CARITAS (feedback-faces) --- */
+.feedback-faces .mauticform-radiogrp-option .feedback-option:before {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.feedback-faces .mauticform-radiogrp-option:nth-child(1) .feedback-option:before { background-color: #E42626; content: "😠"; }
+.feedback-faces .mauticform-radiogrp-option:nth-child(2) .feedback-option:before { background-color: #EC5757; content: "😞"; }
+.feedback-faces .mauticform-radiogrp-option:nth-child(3) .feedback-option:before { background-color: #F1824C; content: "😕"; }
+.feedback-faces .mauticform-radiogrp-option:nth-child(4) .feedback-option:before { background-color: #F9A620; content: "😐"; }
+.feedback-faces .mauticform-radiogrp-option:nth-child(5) .feedback-option:before { background-color: #FDCA40; content: "🙂"; }
+.feedback-faces .mauticform-radiogrp-option:nth-child(6) .feedback-option:before { background-color: #F0DE36; content: "😊"; }
+.feedback-faces .mauticform-radiogrp-option:nth-child(7) .feedback-option:before { background-color: #D2E969; content: "😃"; }
+.feedback-faces .mauticform-radiogrp-option:nth-child(8) .feedback-option:before { background-color: #A6CE54; content: "😄"; }
+.feedback-faces .mauticform-radiogrp-option:nth-child(9) .feedback-option:before { background-color: #7EB356; content: "😁"; }
+.feedback-faces .mauticform-radiogrp-option:nth-child(10) .feedback-option:before { background-color: #5A9746; content: "😍"; }
+.feedback-faces .mauticform-radiogrp-option:nth-child(11) .feedback-option:before { background-color: #2D8132; content: "🤩"; }
+
+.feedback-faces .feedback-radio:checked + .feedback-option:before {
+    transform: scale(1.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* --- ESTRELLAS (feedback-stars) --- */
+.feedback-stars .mauticform-radiogrp-option .feedback-star {
+    color: #ccc;
+    font-size: 32px;
+    transition: color 0.2s;
+}
+
+.feedback-stars .feedback-radio:checked + .feedback-star,
+.feedback-stars .feedback-star.selected {
+    color: #F39200;
+    text-shadow: 0 0 6px #F3920099;
+}
+
+.feedback-stars .mauticform-radiogrp-option .feedback-star:hover,
+.feedback-stars .mauticform-radiogrp-option .feedback-star:hover ~ .feedback-star {
+    color: #F39200;
+}
+
+/* Efecto hover para todas las estrellas previas */
+.feedback-stars .mauticform-radiogrp-option:hover ~ .mauticform-radiogrp-option .feedback-star {
+    color: #ccc;
+}
+
+.feedback-stars .mauticform-radiogrp-option:hover .feedback-star,
+.feedback-stars .mauticform-radiogrp-option:hover ~ .mauticform-radiogrp-option .feedback-star {
+    color: #F39200;
+}
+
+/* Texto Not likely y Likely */
+.mauticform-radiogrp-row::before,
+.mauticform-radiogrp-row::after {
+    content: "Not likely";
+    position: absolute;
+    bottom: -20px;
+    left: 5px;
+    font-size: 11px;
+    color: #777;
+}
+
+.mauticform-radiogrp-row::after {
+    content: "Likely";
+    left: auto;
+    right: 5px;
+}
+
+/* Asegurar que la etiqueta principal queda arriba y centrada */
+.feedback-label {
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    padding: 0 10px;
+}
+
+/* Estilos para el botón de envío */
+.mauticform-button-wrapper {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.mauticform-button {
+    background-color: #F9A620 !important;
+    border: none !important;
+    color: white !important;
+    padding: 10px 0 !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    border-radius: 4px !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+    text-transform: none !important;
+}
+
+.mauticform-button:hover {
+    background-color: #e89b1f !important;
+}
+
+/* Pie de página */
+.mauticform-footer {
+    font-size: 10px;
+    color: #999;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Estilos responsivos */
+@media (max-width: 480px) {
+    .mauticform-radiogrp-row {
+        flex-wrap: wrap;
+    }
+
+    .mauticform-radiogrp-option {
+        flex: 1 0 20%;
+        margin-bottom: 10px;
+    }
+
+    .feedback-option:before {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+    }
+}
+
