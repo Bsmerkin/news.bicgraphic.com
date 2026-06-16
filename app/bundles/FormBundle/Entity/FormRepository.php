@@ -197,7 +197,11 @@ class FormRepository extends CommonRepository
             $query->setMaxResults((int) $options['limit']);
         }
 
-        return $query->executeQuery()->fetchAllAssociative();
+        try {
+            return $query->executeQuery()->fetchAllAssociative();
+        } catch (\Throwable $e) {
+            return [];
+        }
     }
 
     /**
@@ -208,6 +212,13 @@ class FormRepository extends CommonRepository
      */
     public function getResultsTableName($formId, $formAlias): string
     {
+        $formAlias = preg_replace('/[^a-z0-9_]/i', '_', (string) $formAlias);
+        $formAlias = trim($formAlias, '_');
+
+        if ('' === $formAlias) {
+            $formAlias = 'form';
+        }
+
         return MAUTIC_TABLE_PREFIX.'form_results_'.$formId.'_'.$formAlias;
     }
 

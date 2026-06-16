@@ -524,6 +524,13 @@ class SubmissionRepository extends CommonRepository
      */
     public function getResultsTableName($formId, $formAlias): string
     {
+        $formAlias = preg_replace('/[^a-z0-9_]/i', '_', (string) $formAlias);
+        $formAlias = trim($formAlias, '_');
+
+        if ('' === $formAlias) {
+            $formAlias = 'form';
+        }
+
         return MAUTIC_TABLE_PREFIX.'form_results_'.$formId.'_'.$formAlias;
     }
 

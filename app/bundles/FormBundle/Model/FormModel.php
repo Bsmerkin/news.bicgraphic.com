@@ -527,7 +527,7 @@ class FormModel extends CommonFormModel implements GlobalSearchInterface
     public function createTableSchema(Form $entity, $isNew = false, $dropExisting = false): void
     {
         // create the field as its own column in the leads table
-        $name         = 'form_results_'.$entity->getId().'_'.$entity->getAlias();
+        $name         = $this->getResultsTableName($entity->getId(), $entity->getAlias());
         $columns      = $this->generateFieldColumns($entity);
         if ($isNew || (!$isNew && !$this->tableSchemaHelper->checkTableExists($name))) {
             $this->tableSchemaHelper->addTable([
@@ -558,7 +558,7 @@ class FormModel extends CommonFormModel implements GlobalSearchInterface
 
         if (!$entity->getId()) {
             // delete the associated results table
-            $this->tableSchemaHelper->deleteTable('form_results_'.$entity->deletedId.'_'.$entity->getAlias());
+            $this->tableSchemaHelper->deleteTable($this->getResultsTableName((int) $entity->deletedId, $entity->getAlias()));
             $this->tableSchemaHelper->executeChanges();
         }
         parent::deleteEntity($entity);
@@ -575,7 +575,7 @@ class FormModel extends CommonFormModel implements GlobalSearchInterface
         foreach ($entities as $id => $entity) {
             /* @var Form $entity */
             // delete the associated results table
-            $this->tableSchemaHelper->deleteTable('form_results_'.$id.'_'.$entity->getAlias());
+            $this->tableSchemaHelper->deleteTable($this->getResultsTableName((int) $id, $entity->getAlias()));
             $this->deleteFormFiles($entity);
         }
         $this->tableSchemaHelper->executeChanges();
@@ -586,6 +586,18 @@ class FormModel extends CommonFormModel implements GlobalSearchInterface
     private function deleteFormFiles(Form $form): void
     {
         $this->formUploader->deleteFilesOfForm($form);
+    }
+
+    private function getResultsTableName(int $formId, ?string $formAlias): string
+    {
+        $formAlias = preg_replace('/[^a-z0-9_]/i', '_', (string) $formAlias);
+        $formAlias = trim($formAlias, '_');
+
+        if ('' === $formAlias) {
+            $formAlias = 'form';
+        }
+
+        return 'form_results_'.$formId.'_'.$formAlias;
     }
 
     /**
